@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthenticationService } from './authentication.service';
 import { IUser } from '@common/authentication';
+import { JwtModule, JwtService } from '@nestjs/jwt';
+import { jwtConstants } from '@app/authentication/src/constants';
 
 const createUser = async (
   service: AuthenticationService,
@@ -11,11 +13,27 @@ const createUser = async (
   return response.data?.user;
 };
 
+const loginUser = async (
+  service: AuthenticationService,
+  email: string,
+  password: string,
+): Promise<IUser | undefined> => {
+  const response = await service.login(email, password);
+  return { ...response.data?.user, token: response.data?.token };
+};
+
 describe('AuthenticationService', () => {
   let service: AuthenticationService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [
+        JwtModule.register({
+          global: true,
+          secret: 'test',
+          signOptions: { expiresIn: '1d' },
+        }),
+      ],
       providers: [AuthenticationService],
     }).compile();
 
@@ -26,15 +44,25 @@ describe('AuthenticationService', () => {
     expect(service).toBeDefined();
   });
 
-  it('should create user', () => {
-    const user = createUser(service, 'user@email.com', 'test');
+  it('should create user', async () => {
+    const user = await createUser(service, 'user@email.com', 'test');
+
     expect(service.users).toContainEqual(user);
   });
 
-  it('should find user', () => {
+  it('should find user', async () => {
     const email = 'user@email.com';
-    const user = createUser(service, email, 'test');
+    const user = await createUser(service, email, 'test');
 
     expect(service.findOne(email).data?.user).toStrictEqual(user);
+  });
+
+  it('should login user', async () => {
+    const email = 'user@email.com';
+    const password = 'test';
+    await createUser(service, email, password);
+    const userResponse = await loginUser(service, email, password);
+
+    expect(userResponse).toHaveProperty('email', email);
   });
 });

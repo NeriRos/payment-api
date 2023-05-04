@@ -8,6 +8,7 @@ import {
   HttpStatus,
   HttpException,
   Query,
+  Put,
 } from '@nestjs/common';
 
 import { ClientProxy } from '@nestjs/microservices';
@@ -28,6 +29,32 @@ export class AuthenticationController {
   ) {}
 
   @Post()
+  async login(
+    @Body() loginParams: { email: string; password: string },
+  ): Promise<CreateUserResponseDto> {
+    const request = this.authenticationClient.send({ cmd: 'login' }, loginParams);
+    const loginUserResponse: IAuthenticationResponse = await firstValueFrom(request);
+
+    if (loginUserResponse.status !== HttpStatus.OK) {
+      throw new HttpException(
+        {
+          data: null,
+          message: loginUserResponse.message,
+          errors: loginUserResponse.errors,
+        },
+        loginUserResponse.status,
+      );
+    }
+
+    return {
+      status: loginUserResponse.status,
+      message: loginUserResponse.message,
+      data: loginUserResponse.data,
+      errors: null,
+    };
+  }
+
+  @Put()
   async create(@Body() createAuthenticationDto: CreateUserDto): Promise<CreateUserResponseDto> {
     const request = this.authenticationClient.send({ cmd: 'create' }, createAuthenticationDto);
     const createUserResponse: IAuthenticationResponse = await firstValueFrom(request);

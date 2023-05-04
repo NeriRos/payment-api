@@ -15,4 +15,9 @@ export class AuthenticationController {
   findOne(email: string) {
     return this.authenticationService.findOne(email);
   }
+
+  @MessagePattern({ cmd: 'login' })
+  login(loginParams: { email: string; password: string }) {
+    return this.authenticationService.login(loginParams.email, loginParams.password);
+  }
 }

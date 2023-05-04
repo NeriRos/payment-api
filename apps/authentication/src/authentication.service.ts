@@ -2,6 +2,7 @@ import { User } from './entities/user.entity';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserResponseDto, GetUserResponseDto } from '@common/authentication';
+import { LoginUserResponseDto } from '@common/authentication/login-user-response.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -59,6 +60,40 @@ export class AuthenticationService {
       status: HttpStatus.OK,
       message: 'user_find_success',
       data: { user },
+      errors: null,
+    };
+  }
+
+  async login(email: string, password: string): Promise<LoginUserResponseDto> {
+    const user = this.users.filter((user) => user.email === email)[0];
+    if (!user)
+      return {
+        status: HttpStatus.NOT_FOUND,
+        message: 'user_not_found',
+        data: null,
+        errors: {
+          not_found: "user doesn't exist",
+        },
+      };
+
+    if (!user.isValidPassword(password))
+      return {
+        status: HttpStatus.BAD_REQUEST,
+        message: 'user_login_invalid',
+        data: null,
+        errors: {
+          password: {
+            message: 'Invalid password',
+            path: 'password',
+          },
+        },
+      };
+
+    const token = await this.createToken(user);
+    return {
+      status: HttpStatus.OK,
+      message: 'user_login_success',
+      data: { user, token: token.access_token },
       errors: null,
     };
   }
