@@ -61,22 +61,22 @@ nest g lib common
 
 ## Basic flow
 
-1. Create app
-2. Create api-gateway
-    1. Create auth module
-    2. Create payment module
-3. Create authentication microservice
-    1. Create user entity
-    2. Use service property as database
-    3. Create jwt strategy
-    4. Create register and auth routes
-4. Create payment microservice
-    1. Create purchase entity
-    2. Use service property as database
-    3. Create checkout route
-        1. verify user token
-        2. send request to refresh if expired
-        3. complete purchase
+1. [x] Create app
+2. [x] Create api-gateway
+    - [x] Create auth module
+    - [x] Create payment module
+3. [x] Create authentication microservice
+    - [x] Create user entity
+    - [x] Use service property as database
+    - [x] Create jwt strategy
+    - [x] Create register and auth routes
+4. [x] Create payment microservice
+    - [ ] Create purchase entity
+    - [ ] Use service property as database
+    - [ ] Create checkout route
+        - [ ] verify user token
+        - [ ] send request to refresh if expired
+        - [ ] complete purchase
 
 ## Advanced flow
 
