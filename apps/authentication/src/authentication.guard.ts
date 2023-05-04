@@ -28,6 +28,8 @@ export class AuthenticationGuard implements CanActivate {
       const message = this.authenticationClient.send({ cmd: 'validate' }, token);
       const response = await firstValueFrom(message);
 
+      request['user'] = response?.user;
+
       return response?.isValid;
     } catch (e) {
       console.error(e);
