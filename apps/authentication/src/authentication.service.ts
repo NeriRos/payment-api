@@ -6,7 +6,7 @@ import { LoginUserResponseDto } from '@common/authentication/login-user-response
 
 @Injectable()
 export class AuthenticationService {
-  users: User[] = [];
+  private users: User[] = [];
 
   constructor(private readonly jwtService: JwtService) {}
 
