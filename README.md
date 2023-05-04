@@ -99,20 +99,3 @@ In case shipping address is not applicable (for non-physical goods), set the shi
 Note: Add a 2-letter ISO state code (for customers based in the US, Canada, and India only).
 
 </details>
-
-## What I learned
-
-Start with initiating the project with the following command:
-
-```bash
-nest new payment-api
-```
-
-Create the payment module.
-This module will contain the business logic for the checkout process.
-
-create a new module with the following command:
-
-```bash
-nest g module payment
-```
