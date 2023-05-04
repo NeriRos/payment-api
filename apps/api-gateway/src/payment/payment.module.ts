@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { PaymentController } from './payment.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { APP_GUARD } from '@nestjs/core';
-import { AuthenticationGuard } from '@app/authentication/src/authentication/authentication.guard';
+import { AuthenticationGuard } from '@app/authentication/src/authentication.guard';
 
 @Module({
   imports: [
