@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { SendMailDto } from '@common/mailer';
 
 @Injectable()
 export class MailerService {
-  getHello(): string {
-    return 'Hello World!';
+  sendMail(data: SendMailDto): boolean {
+    console.log('SENDING EMAIL', data);
+    return true;
   }
 }
