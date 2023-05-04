@@ -1,8 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthenticationService } from './authentication.service';
 import { IUser } from '@common/authentication';
-import { JwtModule, JwtService } from '@nestjs/jwt';
-import { jwtConstants } from '@app/authentication/src/constants';
+import { JwtModule } from '@nestjs/jwt';
 
 const createUser = async (
   service: AuthenticationService,
