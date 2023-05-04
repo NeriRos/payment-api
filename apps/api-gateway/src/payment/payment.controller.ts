@@ -1,14 +1,41 @@
-import { Controller, Post, Body, Inject, SetMetadata } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Inject,
+  SetMetadata,
+  Get,
+  HttpException,
+  HttpStatus,
+} from '@nestjs/common';
 import { CreatePaymentDto } from '@common/payment';
 import { ClientProxy } from '@nestjs/microservices';
+import { IPaymentResponse } from '@common/payment/payment-response';
+import { firstValueFrom } from 'rxjs';
 
 @Controller('payment')
 export class PaymentController {
   constructor(@Inject('PAYMENT') private readonly paymentClient: ClientProxy) {}
 
   @Post('checkout')
-  @SetMetadata('secured', false)
-  create(@Body() createPaymentDto: CreatePaymentDto) {
-    return this.paymentClient.send({ cmd: 'checkout' }, createPaymentDto);
+  @SetMetadata('secured', true)
+  async create(@Body() createPaymentDto: CreatePaymentDto) {
+    const checkoutResponse = await this.paymentClient.send<IPaymentResponse, any>(
+      { cmd: 'checkout' },
+      createPaymentDto,
+    );
+
+    const response = await firstValueFrom(checkoutResponse);
+
+    if (response.status !== HttpStatus.OK) {
+      throw new HttpException('Payment failed', HttpStatus.PAYMENT_REQUIRED);
+    }
+
+    return { url: '/checkout' };
+  }
+
+  @Get('checkout')
+  getCheckoutPage() {
+    return 'This is the checkout page!';
   }
 }
