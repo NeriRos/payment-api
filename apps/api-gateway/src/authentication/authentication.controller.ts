@@ -7,6 +7,7 @@ import {
   Inject,
   HttpStatus,
   HttpException,
+  Query,
 } from '@nestjs/common';
 
 import { ClientProxy } from '@nestjs/microservices';
@@ -27,6 +28,7 @@ export class AuthenticationController {
 
   @Post()
   async create(@Body() createAuthenticationDto: CreateUserDto): Promise<CreateUserResponseDto> {
+    console.log(createAuthenticationDto);
     const request = this.authenticationClient.send({ cmd: 'create' }, createAuthenticationDto);
     const createUserResponse: IAuthenticationResponse = await firstValueFrom(request);
 
@@ -50,7 +52,7 @@ export class AuthenticationController {
   }
 
   @Get()
-  async findOne(@Param('email') email: string): Promise<GetUserResponseDto> {
+  async findOne(@Query('email') email: string): Promise<GetUserResponseDto> {
     const request = this.authenticationClient.send({ cmd: 'findOne' }, email);
     const getUserResponse: IAuthenticationResponse = await firstValueFrom(request);
 
