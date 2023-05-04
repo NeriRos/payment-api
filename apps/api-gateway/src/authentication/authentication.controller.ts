@@ -8,6 +8,7 @@ import {
   HttpException,
   Query,
   Put,
+  SetMetadata,
 } from '@nestjs/common';
 
 import { ClientProxy } from '@nestjs/microservices';
@@ -78,6 +79,7 @@ export class AuthenticationController {
   }
 
   @Get()
+  @SetMetadata('secured', true)
   async findOne(@Query('email') email: string): Promise<GetUserResponseDto> {
     const request = this.authenticationClient.send({ cmd: 'findOne' }, email);
     const getUserResponse: IAuthenticationResponse = await firstValueFrom(request);

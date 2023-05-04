@@ -20,4 +20,13 @@ export class AuthenticationController {
   login(loginParams: { email: string; password: string }) {
     return this.authenticationService.login(loginParams.email, loginParams.password);
   }
+
+  @MessagePattern({ cmd: 'validate' })
+  async validate(token: string) {
+    const user = await this.authenticationService.getUserByToken(token);
+    return {
+      user,
+      isValid: !!user,
+    };
+  }
 }

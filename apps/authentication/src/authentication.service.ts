@@ -48,9 +48,13 @@ export class AuthenticationService {
     return this.users.filter((user) => user.email === email)[0];
   }
 
-  getUserByToken(token: string): User | undefined {
-    const email = this.jwtService.decode(token)['email'];
-    return this.getUserByEmail(email);
+  async getUserByToken(token: string): Promise<User | undefined> {
+    try {
+      const verification = await this.jwtService.verifyAsync(token);
+      return this.getUserByEmail(verification.email);
+    } catch (e) {
+      return undefined;
+    }
   }
 
   findOne(email: string): GetUserResponseDto {
