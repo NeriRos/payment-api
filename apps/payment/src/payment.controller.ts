@@ -7,7 +7,7 @@ export class PaymentController {
   constructor(private readonly paymentService: PaymentService) {}
 
   @MessagePattern({ cmd: 'checkout' })
-  checkout(): string {
-    return this.paymentService.getHello();
+  checkout(data) {
+    return this.paymentService.checkout(data);
   }
 }
