@@ -7,6 +7,7 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Req,
 } from '@nestjs/common';
 import { CreatePaymentDto } from '@common/payment';
 import { ClientProxy } from '@nestjs/microservices';
@@ -19,7 +20,9 @@ export class PaymentController {
 
   @Post('checkout')
   @SetMetadata('secured', true)
-  async create(@Body() createPaymentDto: CreatePaymentDto) {
+  async create(@Body() createPaymentDto: CreatePaymentDto, @Req() req: any) {
+    createPaymentDto.user = req.user;
+
     const checkoutResponse = await this.paymentClient.send<IPaymentResponse, any>(
       { cmd: 'checkout' },
       createPaymentDto,
