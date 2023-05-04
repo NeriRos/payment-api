@@ -44,8 +44,17 @@ export class AuthenticationService {
     };
   }
 
+  getUserByEmail(email: string): User | undefined {
+    return this.users.filter((user) => user.email === email)[0];
+  }
+
+  getUserByToken(token: string): User | undefined {
+    const email = this.jwtService.decode(token)['email'];
+    return this.getUserByEmail(email);
+  }
+
   findOne(email: string): GetUserResponseDto {
-    const user = this.users.filter((user) => user.email === email)[0];
+    const user = this.getUserByEmail(email);
     if (!user)
       return {
         status: HttpStatus.NOT_FOUND,
@@ -65,7 +74,7 @@ export class AuthenticationService {
   }
 
   async login(email: string, password: string): Promise<LoginUserResponseDto> {
-    const user = this.users.filter((user) => user.email === email)[0];
+    const user = this.getUserByEmail(email);
     if (!user)
       return {
         status: HttpStatus.NOT_FOUND,

@@ -9,7 +9,7 @@ const createUser = async (
   password: string,
 ): Promise<IUser | undefined> => {
   const response = await service.create({ email, password });
-  return response.data?.user;
+  return { ...response.data?.user, token: response.data?.token };
 };
 
 const loginUser = async (
@@ -63,5 +63,14 @@ describe('AuthenticationService', () => {
     const userResponse = await loginUser(service, email, password);
 
     expect(userResponse).toHaveProperty('email', email);
+  });
+
+  it('should return user using token', async () => {
+    const email = 'user@email.com';
+    const password = 'test';
+    const createdUser = await createUser(service, email, password);
+    const user = service.getUserByToken(createdUser.token);
+
+    expect(user.email).toEqual(createdUser.email);
   });
 });
