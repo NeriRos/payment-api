@@ -1,10 +1,22 @@
-import { Controller, Get, Post, Body, Param, Inject } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Inject,
+  HttpStatus,
+  HttpException,
+} from '@nestjs/common';
+
 import { ClientProxy } from '@nestjs/microservices';
 import {
+  IAuthenticationResponse,
+  CreateUserDto,
   CreateUserResponseDto,
   GetUserResponseDto,
-} from '../../../../packages/common';
+} from '@package/common';
+import { firstValueFrom } from 'rxjs';
 
 @Controller('authentication')
 export class AuthenticationController {
@@ -14,18 +26,50 @@ export class AuthenticationController {
   ) {}
 
   @Post()
-  create(@Body() createAuthenticationDto: CreateUserDto) {
-    return this.authenticationClient.send<CreateUserResponseDto, any>(
-      { cmd: 'create' },
-      createAuthenticationDto,
-    );
+  async create(@Body() createAuthenticationDto: CreateUserDto): Promise<CreateUserResponseDto> {
+    const request = this.authenticationClient.send({ cmd: 'create' }, createAuthenticationDto);
+    const createUserResponse: IAuthenticationResponse = await firstValueFrom(request);
+
+    if (createUserResponse.status !== HttpStatus.CREATED) {
+      throw new HttpException(
+        {
+          data: null,
+          message: createUserResponse.message,
+          errors: createUserResponse.errors,
+        },
+        createUserResponse.status,
+      );
+    }
+
+    return {
+      status: createUserResponse.status,
+      message: createUserResponse.message,
+      data: createUserResponse.data,
+      errors: null,
+    };
   }
 
-  @Get(':email')
-  findOne(@Param('email') email: string) {
-    return this.authenticationClient.send<GetUserResponseDto, any>(
-      { cmd: 'findOne' },
-      email,
-    );
+  @Get()
+  async findOne(@Param('email') email: string): Promise<GetUserResponseDto> {
+    const request = this.authenticationClient.send({ cmd: 'findOne' }, email);
+    const getUserResponse: IAuthenticationResponse = await firstValueFrom(request);
+
+    if (getUserResponse.status !== HttpStatus.OK) {
+      throw new HttpException(
+        {
+          data: null,
+          message: getUserResponse.message,
+          errors: getUserResponse.errors,
+        },
+        getUserResponse.status,
+      );
+    }
+
+    return {
+      status: getUserResponse.status,
+      message: getUserResponse.message,
+      data: getUserResponse.data,
+      errors: null,
+    };
   }
 }
