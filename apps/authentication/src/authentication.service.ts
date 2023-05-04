@@ -1,12 +1,15 @@
 import { User } from './entities/user.entity';
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { CreateUserResponseDto, GetUserResponseDto } from '@package/common';
+import { JwtService } from '@nestjs/jwt';
+import { CreateUserResponseDto, GetUserResponseDto } from '@common/authentication';
 
 @Injectable()
 export class AuthenticationService {
   users: User[] = [];
 
-  create(userParams: any): CreateUserResponseDto {
+  constructor(private readonly jwtService: JwtService) {}
+
+  async create(userParams: any): Promise<CreateUserResponseDto> {
     if (this.findOne(userParams.email).data?.user)
       return {
         status: HttpStatus.CONFLICT,
@@ -23,18 +26,21 @@ export class AuthenticationService {
     const user = new User(userParams.email, userParams.password);
     this.users.push(user);
 
-    const token = this.createToken(user);
+    const token = await this.createToken(user);
 
     return {
       status: HttpStatus.CREATED,
       message: 'user_create_success',
-      data: { user, token },
+      data: { user, token: token.access_token },
       errors: null,
     };
   }
 
-  private createToken(user: User): string {
-    return 'token';
+  private async createToken(user: User) {
+    const payload = { email: user.email, sub: user.id };
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
   }
 
   findOne(email: string): GetUserResponseDto {

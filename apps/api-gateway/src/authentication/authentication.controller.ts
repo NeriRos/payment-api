@@ -11,13 +11,14 @@ import {
 } from '@nestjs/common';
 
 import { ClientProxy } from '@nestjs/microservices';
+
+import { firstValueFrom } from 'rxjs';
 import {
-  IAuthenticationResponse,
   CreateUserDto,
   CreateUserResponseDto,
   GetUserResponseDto,
-} from '@package/common';
-import { firstValueFrom } from 'rxjs';
+  IAuthenticationResponse,
+} from '@common/authentication';
 
 @Controller('authentication')
 export class AuthenticationController {
@@ -28,7 +29,6 @@ export class AuthenticationController {
 
   @Post()
   async create(@Body() createAuthenticationDto: CreateUserDto): Promise<CreateUserResponseDto> {
-    console.log(createAuthenticationDto);
     const request = this.authenticationClient.send({ cmd: 'create' }, createAuthenticationDto);
     const createUserResponse: IAuthenticationResponse = await firstValueFrom(request);
 

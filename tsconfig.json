@@ -23,6 +23,12 @@
       ],
       "@package/*": [
         "packages/*"
+      ],
+      "@common": [
+        "libs/common/src"
+      ],
+      "@common/*": [
+        "libs/common/src/*"
       ]
     }
   }

@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthenticationService } from './authentication.service';
-import { IUser } from '@package/common';
+import { IUser } from '@common/authentication';
 
-const createUser = (
+const createUser = async (
   service: AuthenticationService,
   email: string,
   password: string,
-): IUser | undefined => {
-  const response = service.create({ email, password });
+): Promise<IUser | undefined> => {
+  const response = await service.create({ email, password });
   return response.data?.user;
 };
 

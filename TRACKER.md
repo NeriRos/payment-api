@@ -47,6 +47,14 @@ const app = await NestFactory.createMicroservice(AppModule, {
 });
 ```
 
+## Common
+
+Create a common module to share code between apps.
+
+```bash
+nest g lib common
+```
+
 </details>
 
 # TODO

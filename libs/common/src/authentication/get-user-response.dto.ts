@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IAuthenticationResponse, IUser } from '@package/common';
+import { IAuthenticationResponse, IUser } from '.';
 
-export class CreateUserResponseDto implements IAuthenticationResponse {
-  @ApiProperty({ example: 201 })
+export class GetUserResponseDto implements IAuthenticationResponse {
+  @ApiProperty({ example: 200 })
   status: number;
-  @ApiProperty({ example: 'user_find_success' })
+  @ApiProperty({ example: 'get_user_success' })
   message: string;
   @ApiProperty({
     example: {
@@ -17,7 +17,6 @@ export class CreateUserResponseDto implements IAuthenticationResponse {
   })
   data: {
     user: IUser;
-    token: string;
   };
   @ApiProperty({ example: null, nullable: true })
   errors: { [key: string]: any };
