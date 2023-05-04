@@ -38,7 +38,6 @@ export class AuthenticationService {
   }
 
   findOne(email: string): GetUserResponseDto {
-    console.log(email);
     const user = this.users.filter((user) => user.email === email)[0];
     if (!user)
       return {
