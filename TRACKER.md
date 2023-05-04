@@ -6,11 +6,25 @@ Start with initiating the project with the following command:
 nest new payment-api
 ```
 
+Use microservices.
+
+```bash
+yarn add @nestjs/microservices
+```
+
+```typescript
+const app = await NestFactory.createMicroservice(AppModule, {
+  transport: Transport.TCP,
+  options: { port: 3000 }
+});
+```
+
 Create the payment module.
 This module will contain the business logic for the checkout process.
 
-create a new module with the following command:
+create a new resource with the following command:
 
 ```bash
-nest g module payment
+nest g res payment
 ```
+
