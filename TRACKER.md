@@ -2,6 +2,7 @@
 
 <details>
 <summary>Click to expand</summary>
+
 ## Setup
 
 Initialize the project with the following command:
@@ -71,12 +72,11 @@ nest g lib common
     - [x] Create jwt strategy
     - [x] Create register and auth routes
 4. [x] Create payment microservice
-    - [ ] Create purchase entity
-    - [ ] Use service property as database
-    - [ ] Create checkout route
-        - [ ] verify user token
-        - [ ] send request to refresh if expired
-        - [ ] complete purchase
+    - [x] Create checkout route
+        - [x] verify user token
+        - [x] complete purchase
+5. [ ] Create mailer microservice
+    - [ ] Send email
 
 ## Advanced flow
 
