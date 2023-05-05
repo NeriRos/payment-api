@@ -29,10 +29,6 @@ rm -rf apps/payment-api
 
 Create another app called authentication.
 
-```bash
-nest g app authentication
-```
-
 This app will be a microservice.
 
 ```bash
@@ -43,8 +39,8 @@ In main.ts change the NestFactory to create a microservice.
 
 ```typescript
 const app = await NestFactory.createMicroservice(AppModule, {
-  transport: Transport.TCP,
-  options: { port: 3000 }
+    transport: Transport.TCP,
+    options: {port: 3000}
 });
 ```
 
@@ -56,11 +52,17 @@ Create a common module to share code between apps.
 nest g lib common
 ```
 
+Add DTOs for the various apps.
+
+```bash
+nest g class common/<app>/<dto>.dto
+```
+
 </details>
 
 # TODO
 
-## Basic flow
+## Basic app
 
 1. [x] Create app
 2. [x] Create api-gateway
@@ -73,12 +75,12 @@ nest g lib common
     - [x] Create register and auth routes
 4. [x] Create payment microservice
     - [x] Create checkout route
-        - [x] verify user token
+        - [x] protect route with jwt
         - [x] complete purchase
 5. [ ] Create mailer microservice
     - [ ] Send email
 
-## Advanced flow
+## Advanced app
 
 1. Add EventBus
     1. Use RabbitMQ
