@@ -28,6 +28,10 @@ available resources to help you complete the task. However, we expect that the c
 work.
 </details>
 
+## Prerequisites
+
+- Node
+
 ## API
 
 <details>

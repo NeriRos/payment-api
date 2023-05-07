@@ -27,9 +27,7 @@ rm -rf apps/payment-api
 
 ## Authentication
 
-Create another app called authentication.
-
-This app will be a microservice.
+Create the authentication app microservice.
 
 ```bash
 yarn add @nestjs/microservices
