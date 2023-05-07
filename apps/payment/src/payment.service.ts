@@ -1,14 +1,14 @@
-import { HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { IPaymentResponse } from '@common/payment/payment-response';
-import { ClientProxy } from '@nestjs/microservices';
-import { SendMailDto } from '@common/mailer';
-import { CreatePaymentDto } from '@common/payment';
+import { HttpStatus, Injectable } from '@nestjs/common';
+import { IPaymentResponse } from '@lib/common/payment/payment-response';
+import { CreatePaymentDto } from '@lib/common/payment';
+import { MailService, SendEmailDto } from '@lib/mail';
+import { EmailTemplates } from '@lib/mail/mail.constraints';
 
 @Injectable()
 export class PaymentService {
-  constructor(@Inject('MAILER') private readonly mailerClient: ClientProxy) {}
+  constructor(private mailerClient: MailService) {}
 
-  checkout(paymentDto: CreatePaymentDto): IPaymentResponse {
+  async checkout(paymentDto: CreatePaymentDto): Promise<IPaymentResponse> {
     if (!paymentDto)
       return {
         status: HttpStatus.BAD_REQUEST,
@@ -24,7 +24,7 @@ export class PaymentService {
 
     const paymentMade = this.takePayment(paymentDto);
 
-    if (!paymentMade)
+    if (!paymentMade?.success)
       return {
         status: HttpStatus.PAYMENT_REQUIRED,
         message: 'payment_checkout_failed',
@@ -36,12 +36,20 @@ export class PaymentService {
         },
       };
 
-    this.sendEmail({
-      to: paymentDto.user.email,
-      subject: 'Payment successful',
-      template: 'payment-successful',
-      data: paymentDto.data,
-    });
+    try {
+      await this.mailerClient.sendEmail({
+        user: paymentDto.user,
+        subject: 'Payment successful',
+        template: EmailTemplates.PAYMENT_SUCCESS,
+        context: {
+          order_id: paymentMade.orderId,
+        },
+      });
+
+      console.log('EMAIL SENT');
+    } catch (e) {
+      console.error('EMAIL FAILED', e);
+    }
 
     return {
       status: HttpStatus.OK,
@@ -51,15 +59,10 @@ export class PaymentService {
     };
   }
 
-  takePayment(paymentDto: CreatePaymentDto): boolean {
-    return true;
-  }
-
-  async sendEmail(data: SendMailDto) {
-    console.log('SHOUDLD SEND');
-    const test = await this.mailerClient.send({ cmd: 'test' }, data);
-    //
-    // const test = await this.mailerClient.emit('send-email', data);
-    test.subscribe((res) => console.log(res));
+  takePayment(paymentDto: CreatePaymentDto) {
+    return {
+      success: true,
+      orderId: Math.random().toString(36).substring(7),
+    };
   }
 }

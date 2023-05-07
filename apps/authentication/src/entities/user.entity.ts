@@ -1,4 +1,4 @@
-import { IUser } from '@common/authentication';
+import { IUser } from '@lib/common/authentication';
 
 export class User implements IUser {
   private readonly _password: string;

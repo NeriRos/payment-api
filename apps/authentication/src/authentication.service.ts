@@ -1,8 +1,8 @@
 import { User } from './entities/user.entity';
 import { HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { CreateUserResponseDto, GetUserResponseDto } from '@common/authentication';
-import { LoginUserResponseDto } from '@common/authentication/login-user-response.dto';
+import { CreateUserResponseDto, GetUserResponseDto } from '@lib/common/authentication';
+import { LoginUserResponseDto } from '@lib/common/authentication/login-user-response.dto';
 
 @Injectable()
 export class AuthenticationService {

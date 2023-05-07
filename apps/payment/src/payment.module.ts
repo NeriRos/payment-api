@@ -1,21 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Module, OnApplicationBootstrap } from '@nestjs/common';
 import { PaymentController } from './payment.controller';
 import { PaymentService } from './payment.service';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { MailModule } from '@lib/mail';
 
 @Module({
-  imports: [
-    ClientsModule.register([
-      {
-        name: 'MAILER',
-        options: {
-          transport: Transport.TCP,
-          host: '127.0.0.1',
-          post: 3003,
-        },
-      },
-    ]),
-  ],
+  imports: [MailModule],
   controllers: [PaymentController],
   providers: [PaymentService],
 })

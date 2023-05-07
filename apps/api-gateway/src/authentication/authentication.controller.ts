@@ -19,7 +19,7 @@ import {
   CreateUserResponseDto,
   GetUserResponseDto,
   IAuthenticationResponse,
-} from '@common/authentication';
+} from '@lib/common/authentication';
 
 @Controller('authentication')
 export class AuthenticationController {

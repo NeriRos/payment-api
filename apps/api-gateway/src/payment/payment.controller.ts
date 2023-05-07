@@ -9,9 +9,9 @@ import {
   HttpStatus,
   Req,
 } from '@nestjs/common';
-import { CreatePaymentDto } from '@common/payment';
+import { CreatePaymentDto } from '@lib/common/payment';
 import { ClientProxy } from '@nestjs/microservices';
-import { IPaymentResponse } from '@common/payment/payment-response';
+import { IPaymentResponse } from '@lib/common/payment/payment-response';
 import { firstValueFrom } from 'rxjs';
 
 @Controller('payment')
@@ -34,7 +34,7 @@ export class PaymentController {
       throw new HttpException('Payment failed', HttpStatus.PAYMENT_REQUIRED);
     }
 
-    return { url: '/checkout' };
+    return { url: `${process.env.SERVER_URL}/checkout` };
   }
 
   @Get('checkout')

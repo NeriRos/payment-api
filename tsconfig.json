@@ -24,10 +24,10 @@
       "@package/*": [
         "packages/*"
       ],
-      "@common": [
+      "@lib/common": [
         "libs/common/src"
       ],
-      "@common/*": [
+      "@lib/common/*": [
         "libs/common/src/*"
       ],
       "@lib/mail": [

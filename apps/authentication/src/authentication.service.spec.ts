@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthenticationService } from './authentication.service';
-import { IUser } from '@common/authentication';
+import { IUser } from '@lib/common/authentication';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import * as module from 'module';
 
