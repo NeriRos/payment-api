@@ -3,9 +3,11 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import { Module } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { join } from 'path';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     MailerModule.forRoot({
       transport: {
         host: process.env.SMTP_HOST,
@@ -29,5 +31,6 @@ import { join } from 'path';
     }),
   ],
   providers: [MailService],
+  exports: [MailService],
 })
 export class MailModule {}
