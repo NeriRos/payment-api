@@ -103,3 +103,9 @@ In case shipping address is not applicable (for non-physical goods), set the shi
 Note: Add a 2-letter ISO state code (for customers based in the US, Canada, and India only).
 
 </details>
+
+## Result
+
+Email sent
+
+![img.png](img.png)
