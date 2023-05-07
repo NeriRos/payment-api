@@ -3,9 +3,11 @@ import { PaymentController } from './payment.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthenticationGuard } from '@app/authentication/src/authentication.guard';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     ClientsModule.register([
       {
         name: 'PAYMENT',

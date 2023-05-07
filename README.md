@@ -4,33 +4,22 @@
 
 This is a microservice for providing payment functionality.
 
-## Assignment
-
-<details>
-<summary>Click to expand</summary>
-
-### Task
-
-Create a simple microservice application using NestJS. The application should perform the following tasks: \
-Expose a REST API method to initiate a payment. \
-To create the payment use the payment service `POST /pay-ins/checkout` endpoint. \
-check our docs for this assignment  (https://docs.unipaas.com/docs) \
-The create payment method will return a link to a checkout page to the client who initiated the payment process. \
-After the payment is completed, the application sends an email to the buyer confirming the payment.
-
-### Deliverables
-
-link to GitHub with the code. \
-Optional: deploy the application to the cloud and send a link to the API reference.
-
-Please note that the focus of this assignment is on demonstrating your hands-on skills, so feel free to use any \
-available resources to help you complete the task. However, we expect that the code you submit will be your own original
-work.
-</details>
+My goal is to keep this simple, so I will not be using any database, but instead I will be using a simple in-memory
+store.
 
 ## Prerequisites
 
-- Node
+- NodeJS
+
+## Running the app
+
+```bash
+npm run start:all
+```
+
+To test the app, you can use postman or curl. \
+To use postman, import the collection from the root folder. \
+The curl examples are provided below.
 
 ## API
 
@@ -102,6 +91,73 @@ In case shipping address is not applicable (for non-physical goods), set the shi
 
 Note: Add a 2-letter ISO state code (for customers based in the US, Canada, and India only).
 
+## Authentication
+
+### Sign up
+
+**PUT /authentication**
+
+```bash
+curl --location --request PUT 'http://localhost:3000/authentication' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email": "<email>"
+    "password": "<password>"
+}'
+```
+
+This request will return the token which you can use to authenticate your requests.
+
+### Get user
+
+**GET /authentication**
+
+```bash
+curl --location --request GET 'http://localhost:3000/authentication' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <access_token>'
+```
+
+This request will return the user details.
+
+### Sign in
+
+**POST /authentication**
+
+```bash
+curl --location --request POST 'http://localhost:3000/authentication' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <access_token>' \
+--data-raw '{
+    "email": "<email>"
+    "password": "<password>"
+}'
+```
+
+</details>
+
+## Assignment
+
+<details>
+<summary>Click to expand</summary>
+
+### Task
+
+Create a simple microservice application using NestJS. The application should perform the following tasks: \
+Expose a REST API method to initiate a payment. \
+To create the payment use the payment service `POST /pay-ins/checkout` endpoint. \
+check our docs for this assignment  (https://docs.unipaas.com/docs) \
+The create payment method will return a link to a checkout page to the client who initiated the payment process. \
+After the payment is completed, the application sends an email to the buyer confirming the payment.
+
+### Deliverables
+
+link to GitHub with the code. \
+Optional: deploy the application to the cloud and send a link to the API reference.
+
+Please note that the focus of this assignment is on demonstrating your hands-on skills, so feel free to use any \
+available resources to help you complete the task. However, we expect that the code you submit will be your own original
+work.
 </details>
 
 ## Result

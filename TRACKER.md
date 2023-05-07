@@ -86,16 +86,13 @@ yarn add --dev @types/nodemailer
     - [x] Create checkout route
         - [x] protect route with jwt
         - [x] complete purchase
-5. [ ] Create mailer microservice
-    - [ ] Send email
+5. [x] Create mailer microservice
+    - [x] Send email
 
 ## Advanced app
 
-1. Add EventBus
-    1. Use RabbitMQ
-2. Add prisma
-    1. Use Redis for caching
-    2. Use Postgres for storage
+1. Add EventBus (RabbitMQ)
+2. Add prisma (Postgres)
 3. Add docker
 4. Add CI/CD
 5. Add AWS

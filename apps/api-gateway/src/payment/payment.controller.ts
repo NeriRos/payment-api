@@ -14,7 +14,7 @@ import { ClientProxy } from '@nestjs/microservices';
 import { IPaymentResponse } from '@lib/common/payment/payment-response';
 import { firstValueFrom } from 'rxjs';
 
-@Controller('payment')
+@Controller('pay-ins')
 export class PaymentController {
   constructor(@Inject('PAYMENT') private readonly paymentClient: ClientProxy) {}
 
