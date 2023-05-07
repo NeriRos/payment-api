@@ -55,7 +55,11 @@ export class PaymentService {
     return true;
   }
 
-  sendEmail(data: SendMailDto) {
-    return this.mailerClient.emit('MAILER', data);
+  async sendEmail(data: SendMailDto) {
+    console.log('SHOUDLD SEND');
+    const test = await this.mailerClient.send({ cmd: 'test' }, data);
+    //
+    // const test = await this.mailerClient.emit('send-email', data);
+    test.subscribe((res) => console.log(res));
   }
 }

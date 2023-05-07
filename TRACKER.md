@@ -58,6 +58,17 @@ Add DTOs for the various apps.
 nest g class common/<app>/<dto>.dto
 ```
 
+## Mail
+
+Create a mailer app microservice.
+
+Install dependencies.
+
+```bash
+yarn add  @nestjs-modules/mailer nodemailer handlebars
+yarn add --dev @types/nodemailer
+```
+
 </details>
 
 # TODO
